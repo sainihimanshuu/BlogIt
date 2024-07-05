@@ -34,26 +34,16 @@ const userSchema = new mongoose.Schema(
 //before saving we need to-
 //encrypt the password
 
-userSchema.pre("save", (next) => {
-    bcrypt
-        .hash(this.password, 10)
-        .then((hash) => {
-            this.password = hash;
-        })
-        .catch((error) =>
-            console.log({
-                message: "Error while encypting the password",
-                error: error,
-            })
-        )
-        .finally(next());
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
 });
 
 userSchema.methods = {
-    isPasswordCorrect: (password) => {
-        bcrypt.compare(password, this.password).then((result) => {
-            return result;
-        });
+    isPasswordCorrect: async function (plainTextPassword) {
+        return await bcrypt.compare(plainTextPassword, this.password);
     },
 
     generateAccessToken: function () {
@@ -74,10 +64,8 @@ userSchema.methods = {
         return jwt.sign(
             {
                 id: this._id,
-                username: this.username,
-                email: this.email,
             },
-            process.loadEnvFile.REFRESH_TOKEN_SECRET,
+            process.env.REFRESH_TOKEN_SECRET,
             {
                 expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
             }

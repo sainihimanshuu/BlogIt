@@ -1,4 +1,4 @@
-import connectToDatabase from "./src/database.js";
+import connectToDatabase from "./src/database/index.js";
 import app from "./app.js";
 
 connectToDatabase()
