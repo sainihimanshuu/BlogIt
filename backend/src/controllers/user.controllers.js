@@ -4,6 +4,7 @@ import { z } from "zod";
 import { ApiError } from "../utils/ApiError.js";
 import { uploadOnCloundinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -61,11 +62,14 @@ const createUser = asyncHandler(async (req, res) => {
     //upload avator to cloudinary
     const avatarLocalFilePath = req.file?.path;
     const cloudinaryResponse = await uploadOnCloundinary(avatarLocalFilePath);
-    const avatar = cloudinaryResponse.url;
+    const avatar = cloudinaryResponse;
 
     const userDetails = {
         ...validatedData,
-        avatar: avatar,
+        avatar: {
+            public_id: avatar.public_id,
+            url: avatar.url,
+        },
     };
 
     const newUser = await User.create(userDetails);
@@ -168,7 +172,7 @@ const accountProfile = asyncHandler(async (req, res) => {
     const accountBlogs = await User.aggregate([
         {
             $match: {
-                _id: "id",
+                _id: new mongoose.Types.ObjectId(id),
             },
         },
         {
@@ -183,6 +187,7 @@ const accountProfile = asyncHandler(async (req, res) => {
             $project: {
                 username: 1,
                 avatar: 1,
+                about: 1,
                 blogs: {
                     title: 1,
                     coverImage: 1,
@@ -191,16 +196,9 @@ const accountProfile = asyncHandler(async (req, res) => {
         },
     ]);
 
-    const accountUserDetail = await User.findOne({ _id: id }).select(
-        "-password -email -refreshToken"
-    );
-
     const profile = {
-        accountUserDetail,
-        accountBlogs: accountBlogs,
+        accountBlogs,
     };
-
-    console.log(profile);
 
     return res
         .status(200)
