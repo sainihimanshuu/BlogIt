@@ -28,6 +28,8 @@ const createUserSchema = z.object({
     username: z
         .string()
         .regex(/^[a-zA-Z_]+$/)
+        .min(3, { message: "username must be at least 3 character " })
+        .max(20, { message: "username can be max 20 character" })
         .trim(),
     email: z.string().email().trim(),
     password: z
@@ -60,17 +62,22 @@ const createUser = asyncHandler(async (req, res) => {
     }
 
     //upload avator to cloudinary
-    const avatarLocalFilePath = req.file?.path;
-    const cloudinaryResponse = await uploadOnCloundinary(avatarLocalFilePath);
-    const avatar = cloudinaryResponse;
+    let userDetails = validatedData;
 
-    const userDetails = {
-        ...validatedData,
-        avatar: {
-            public_id: avatar.public_id,
-            url: avatar.url,
-        },
-    };
+    if (req.file) {
+        const avatarLocalFilePath = req.file?.path;
+        const cloudinaryResponse =
+            await uploadOnCloundinary(avatarLocalFilePath);
+        const avatar = cloudinaryResponse;
+
+        userDetails = {
+            ...userDetails,
+            avatar: {
+                public_id: avatar.public_id,
+                url: avatar.url,
+            },
+        };
+    }
 
     const newUser = await User.create(userDetails);
 
@@ -81,20 +88,19 @@ const createUser = asyncHandler(async (req, res) => {
     return res.status(200).json({ message: "User created successfully", user });
 });
 
-const loginUserSchema = z
-    .object({
-        username: z
-            .string()
-            .regex(/^[a-zA-Z_]+$/)
-            .trim(),
-        password: z.string(),
-    })
-    .or(
-        z.object({
-            email: z.string().email().trim(),
-            password: z.string(),
-        })
-    );
+const loginUserSchema = z.object({
+    email: z.string().email().trim(),
+    password: z.string(),
+});
+// .or(
+//     z.object({
+//         username: z
+//             .string()
+//             .regex(/^[a-zA-Z_]+$/)
+//             .trim(),
+//         password: z.string(),
+//     })
+// );
 
 const loginUser = asyncHandler(async (req, res) => {
     const validatedData = loginUserSchema.parse(req.body);
@@ -131,7 +137,7 @@ const loginUser = asyncHandler(async (req, res) => {
         .status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .json({ message: "Login successfull", user });
+        .json({ message: "Login successfull", user, accessToken });
 });
 
 const logOut = asyncHandler(async (req, res) => {

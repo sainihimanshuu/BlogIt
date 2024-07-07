@@ -3,11 +3,13 @@
 import User from "../models/user.models.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
+import { ApiError } from "../utils/ApiError.js";
 
 const authenticateUser = asyncHandler(async (req, _, next) => {
     const token =
         req.cookies?.accessToken ||
-        req.header("Authorization")?.replace("Bearer ", "");
+        req.header("Authorization")?.replace("Bearer ", "") ||
+        req.body.accessToken;
 
     if (!token) {
         throw new ApiError(401, "unathorized access");
