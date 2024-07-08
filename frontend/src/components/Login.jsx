@@ -39,7 +39,10 @@ export default function Login() {
                     "token",
                     String(response.data.accessToken)
                 );
-                localStorage.setItem("user", String(response.data.user));
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(response.data.user)
+                );
                 navigate("/");
             })
             .catch((error) => {

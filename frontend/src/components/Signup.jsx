@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./Button.jsx";
 import Input from "./Input.jsx";
 import { useForm } from "react-hook-form";
@@ -50,7 +50,6 @@ export default function Signup() {
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
-        console.log(data);
         axios
             .post("/user/createUser", data)
             .then((response) => {
@@ -91,6 +90,8 @@ export default function Signup() {
                     <Button className="myButton" type="submit">
                         Signup
                     </Button>
+                    <h2>Already have an account?</h2>
+                    <Link to="/login">Log In</Link>
                 </form>
             </div>
         </div>

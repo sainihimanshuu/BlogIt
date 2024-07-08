@@ -195,6 +195,7 @@ const accountProfile = asyncHandler(async (req, res) => {
                 avatar: 1,
                 about: 1,
                 blogs: {
+                    _id: 1,
                     title: 1,
                     coverImage: 1,
                 },
@@ -202,13 +203,10 @@ const accountProfile = asyncHandler(async (req, res) => {
         },
     ]);
 
-    const profile = {
-        accountBlogs,
-    };
-
-    return res
-        .status(200)
-        .json({ message: "account detatils fetched", profile });
+    return res.status(200).json({
+        message: "account detatils fetched",
+        accountBlogs: accountBlogs[0],
+    });
 });
 
 const updateAccountDetailsSchema = z.object({

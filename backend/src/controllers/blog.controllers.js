@@ -5,6 +5,7 @@ import {
     uploadOnCloundinary,
 } from "../utils/cloudinary.js";
 import Blog from "../models/blog.models.js";
+import mongoose from "mongoose";
 
 const createBlogSchema = z.object({
     title: z.string().trim(),
@@ -104,12 +105,43 @@ const deleteBlog = asyncHandler(async (req, res) => {
 const getBlog = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const blog = await Blog.findById(id);
-    if (!blog) {
-        throw new ApiError(400, "No blog exists");
-    }
+    const blogg = await Blog.aggregate([
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(id),
+            },
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "author",
+                foreignField: "_id",
+                as: "authorDetails",
+            },
+        },
+        {
+            $project: {
+                _id: 1,
+                title: 1,
+                coverImage: 1,
+                content: 1,
+                authorDetails: {
+                    avatar: 1,
+                    username: 1,
+                },
+            },
+        },
+        {
+            //because we will have only one author
+            $unwind: {
+                path: "$authorDetails",
+            },
+        },
+    ]);
 
-    return res.status(200).json({ message: "Blog fetched successfully", blog });
+    return res
+        .status(200)
+        .json({ message: "Blog fetched successfully", blog: blogg[0] });
 });
 
 export { createBlog, editBlog, deleteBlog, getBlog };

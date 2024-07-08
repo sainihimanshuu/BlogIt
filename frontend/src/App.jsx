@@ -16,7 +16,7 @@ function App() {
         }
         axios
             .get("/user/getCurrentUser")
-            .then((response) => dispatch(storeLogin(response.currentUser)))
+            .then((response) => dispatch(storeLogin(response.data.currentUser)))
             .catch((error) => console.log("user not logged in", error))
             .finally(() => {
                 setLoading(false);
