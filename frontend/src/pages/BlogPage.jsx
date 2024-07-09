@@ -6,7 +6,7 @@ export default function BlogPage() {
 
     return (
         <div>
-            <Blog blogId={response.data.blog} />
+            <Blog blogDetails={response.data.blog} />
         </div>
     );
 }

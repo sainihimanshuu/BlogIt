@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import FormData from "form-data";
+import util from "util";
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 3;
+const MAX_UPLOAD_SIZE = 8 * 1024 * 1024 * 1024 * 3;
 const ACCEPTED_IMAGE_TYPES = [
     "image/jpeg",
     "image/jpg",
@@ -25,17 +27,17 @@ const schema = z.object({
     password: z
         .string()
         .min(8, { message: "Password must be at least 8 characters" }),
-    // avatar: z
-    //     .instanceof(File)
-    //     .refine(
-    //         (file) => !file || file.size <= MAX_UPLOAD_SIZE,
-    //         "file size must be less than 3MB"
-    //     )
-    //     .refine(
-    //         (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-    //         "Only .jpg, .jpeg, .png and .webp formats are supported."
-    //     )
-    //     .optional(),
+    avatar: z
+        .any()
+        .refine(
+            (file) => file || file[0].size <= MAX_UPLOAD_SIZE,
+            "file size must be less than 3MB"
+        )
+        .refine(
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file[0].type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
+        )
+        .optional(),
 });
 
 export default function Signup() {
@@ -50,8 +52,21 @@ export default function Signup() {
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
+        const form = new FormData();
+        form.append("avatar", data.avatar[0]);
+
+        for (const key in data) {
+            if (key !== "avatar") {
+                form.append(key, data[key]);
+            }
+        }
+
         axios
-            .post("/user/createUser", data)
+            .post("/user/createUser", form, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
             .then((response) => {
                 navigate("/login");
             })
@@ -63,12 +78,11 @@ export default function Signup() {
             <div className="mt-0">
                 <h2 className="font-bold text-2xl">Signup</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* <Input
-                        label="avatar"
+                    <Input
                         type="file"
                         error={errors.avatar?.message}
                         {...register("avatar")}
-                    /> */}
+                    />
                     <Input
                         className=""
                         placeHolder="username"

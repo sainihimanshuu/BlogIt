@@ -52,28 +52,32 @@ export default function Login() {
     };
 
     return (
-        <div className="bg-gray-200 shadow-2xl mt-14 w-80 h-96 mx-auto rounded-[20px] flex justify-center items-center">
-            <div className="mt-0">
-                <h2 className="font-bold text-2xl">Login</h2>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Input
-                        className=""
-                        placeHolder="email"
-                        error={errors.email?.message}
-                        {...register("email")}
-                    />
-                    <Input
-                        placeHolder="password"
-                        type="password"
-                        error={errors.password?.message}
-                        {...register("password")}
-                    />
-                    <Button className="myButton" type="submit">
-                        LogIn
-                    </Button>
-                </form>
-                {!isValidCredientials && <span>Invalid credentials</span>}
-            </div>
+        <div className="bg-gray-200 shadow-2xl mt-14 w-80 h-96 mx-auto rounded-[20px] flex items-center relative">
+            {/* <div className="mt-0"> */}
+            <h2 className="absolute font-bold text-2xl top-10 ml-auto">
+                Login
+            </h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="absolute top-46">
+                <Input
+                    label="email"
+                    className="mb-8 mt-20 h-7 p-2 rounded-md ml-0"
+                    placeHolder="email"
+                    error={errors.email?.message}
+                    {...register("email")}
+                />
+                <Input
+                    className="mb-12 h-7 p-2 rounded-md"
+                    placeHolder="password"
+                    type="password"
+                    error={errors.password?.message}
+                    {...register("password")}
+                />
+                <Button className="myButton" type="submit">
+                    LogIn
+                </Button>
+            </form>
+            {!isValidCredientials && <span>Invalid credentials</span>}
+            {/* </div> */}
         </div>
     );
 }

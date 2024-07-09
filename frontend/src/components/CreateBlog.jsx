@@ -4,17 +4,28 @@ import Button from "./Button.jsx";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import FormData from "form-data";
 
 export default function CreateBlog() {
     const { register, handleSubmit, control } = useForm();
     const navigate = useNavigate();
 
     const create = (data) => {
+        const form = new FormData();
+        form.append("coverImage", data.coverImage[0]);
+
+        for (const key in data) {
+            if (key !== "coverImage") {
+                form.append(key, data[key]);
+            }
+        }
+
         axios
-            .post("/blog/createBlog", {
-                ...data,
-                author: localStorage.getItem("user")._id,
-                accessToken: localStorage.getItem("token"),
+            .post("/blog/createBlog", form, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
             })
             .then((response) => {
                 console.log("Post created");

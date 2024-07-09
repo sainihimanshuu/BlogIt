@@ -1,17 +1,14 @@
-import { useId } from "react";
 import PostCard from "./PostCard.jsx";
 
 export default function AccountProfile({ accountDetails: { accountBlogs } }) {
-    const id = useId();
-
     return (
         <div>
             <div>
                 <img
                     src={
-                        // accountDetails.avatar?.url
-                        //     ? accountDetails.avatar?.url
-                        `/no-profile-picture-15257.svg`
+                        accountBlogs.avatar?.url
+                            ? accountBlogs.avatar?.url
+                            : `/no-profile-picture-15257.svg`
                     }
                 />
                 <h1>{accountBlogs.username}</h1>
@@ -19,8 +16,8 @@ export default function AccountProfile({ accountDetails: { accountBlogs } }) {
             </div>
             <div>
                 <ul>
-                    {accountBlogs.blogs.map((blog) => (
-                        <li id={id}>
+                    {accountBlogs.blogs.map((blog, index) => (
+                        <li key={index}>
                             <PostCard blogId={blog._id} />
                         </li>
                     ))}
