@@ -18,6 +18,7 @@ import {
     CreateBlogPage,
     AccountProfilePage,
     BlogPage,
+    AllBlogsPage,
 } from "./pages/index.js";
 
 axios.defaults.baseURL = "http://localhost:8000/api/v1";
@@ -61,6 +62,7 @@ const router = createBrowserRouter(
                     }
                 }}
             />
+            <Route path="/getAllBlogs" element={<AllBlogsPage />} />
         </Route>
     )
 );

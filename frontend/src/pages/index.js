@@ -4,6 +4,7 @@ import HomePage from "./HomePage.jsx";
 import CreateBlogPage from "./CreateBlogPage.jsx";
 import AccountProfilePage from "./AccountProfilePage.jsx";
 import BlogPage from "./BlogPage.jsx";
+import AllBlogsPage from "./AllBlogsPage.jsx";
 
 export {
     LoginPage,
@@ -12,4 +13,5 @@ export {
     CreateBlogPage,
     AccountProfilePage,
     BlogPage,
+    AllBlogsPage,
 };

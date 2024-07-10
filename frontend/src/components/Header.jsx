@@ -30,16 +30,21 @@ export default function Header() {
                 <img src="/blogit.png" className="w-20 ml-2" />
             </Link>
             <div className="flex justify-between items-center">
-                <Button className="myButton">All Blogs</Button>
+                <Button
+                    className="myButton"
+                    onClick={() => navigate("/getAllBlogs")}
+                >
+                    All Blogs
+                </Button>
                 {loginStatus ? (
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center">
                         <Button className="myButton" onClick={handleLogout}>
                             Logout
                         </Button>
                         <UserIcon className="m-2" />
                     </div>
                 ) : (
-                    <div>
+                    <div className="flex items-center">
                         <Button
                             className="myButton"
                             onClick={() => navigate("/signup")}

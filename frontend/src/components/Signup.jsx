@@ -34,7 +34,7 @@ const schema = z.object({
             "file size must be less than 3MB"
         )
         .refine(
-            (file) => ACCEPTED_IMAGE_TYPES.includes(file[0].type),
+            (file) => file || ACCEPTED_IMAGE_TYPES.includes(file[0].type),
             "Only .jpg, .jpeg, .png and .webp formats are supported."
         )
         .optional(),
@@ -74,40 +74,41 @@ export default function Signup() {
     };
 
     return (
-        <div className="bg-gray-200 shadow-2xl mt-14 w-80 h-96 mx-auto rounded-[20px] flex justify-center items-center">
-            <div className="mt-0">
-                <h2 className="font-bold text-2xl">Signup</h2>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <Input
-                        type="file"
-                        error={errors.avatar?.message}
-                        {...register("avatar")}
-                    />
-                    <Input
-                        className=""
-                        placeHolder="username"
-                        error={errors.username?.message}
-                        {...register("username")}
-                    />
-                    <Input
-                        className=""
-                        placeHolder="email"
-                        error={errors.email?.message}
-                        {...register("email")}
-                    />
-                    <Input
-                        placeHolder="password"
-                        type="password"
-                        error={errors.password?.message}
-                        {...register("password")}
-                    />
-                    <Button className="myButton" type="submit">
-                        Signup
-                    </Button>
-                    <h2>Already have an account?</h2>
-                    <Link to="/login">Log In</Link>
-                </form>
-            </div>
+        <div className="bg-gray-200 shadow-2xl rounded-[20px] w-80 h-[33rem] mx-auto mt-16 mb-10 relative">
+            <h2 className="text-gray-800 text-xl font-bold absolute top-0 right-0 bottom-0 left-0 mt-6">
+                Signup
+            </h2>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="absolute top-0 right-0 bottom-0 left-0 mt-24"
+            >
+                <Input
+                    type="file"
+                    error={errors.avatar?.message}
+                    {...register("avatar")}
+                />
+                <Input
+                    placeHolder="username"
+                    error={errors.username?.message}
+                    {...register("username")}
+                />
+                <Input
+                    placeHolder="email"
+                    error={errors.email?.message}
+                    {...register("email")}
+                />
+                <Input
+                    placeHolder="password"
+                    type="password"
+                    error={errors.password?.message}
+                    {...register("password")}
+                />
+                <Button className="myButton" type="submit">
+                    Signup
+                </Button>
+                <h2>Already have an account?</h2>
+                <Link to="/login">Log In</Link>
+            </form>
         </div>
     );
 }

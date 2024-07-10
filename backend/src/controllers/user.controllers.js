@@ -38,7 +38,7 @@ const createUserSchema = z.object({
     about: z.string().optional(),
 });
 
-const createUser = asyncHandler(async (req, res) => {
+const createUser = asyncHandler(async (req, res) => { 
     const validatedData = createUserSchema.parse(req.body);
 
     //need to check if this can be done by zod

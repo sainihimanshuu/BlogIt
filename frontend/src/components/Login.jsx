@@ -52,21 +52,21 @@ export default function Login() {
     };
 
     return (
-        <div className="bg-gray-200 shadow-2xl mt-14 w-80 h-96 mx-auto rounded-[20px] flex items-center relative">
+        <div className="bg-gray-200 shadow-2xl rounded-[20px] w-80 h-[22rem] mx-auto mt-16 relative">
             {/* <div className="mt-0"> */}
-            <h2 className="absolute font-bold text-2xl top-10 ml-auto">
+            <h2 className="text-gray-800 text-xl font-bold absolute top-0 right-0 bottom-0 left-0 mt-6">
                 Login
             </h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="absolute top-46">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="absolute top-0 right-0 bottom-0 left-0 mt-24"
+            >
                 <Input
-                    label="email"
-                    className="mb-8 mt-20 h-7 p-2 rounded-md ml-0"
                     placeHolder="email"
                     error={errors.email?.message}
                     {...register("email")}
                 />
                 <Input
-                    className="mb-12 h-7 p-2 rounded-md"
                     placeHolder="password"
                     type="password"
                     error={errors.password?.message}
@@ -76,7 +76,11 @@ export default function Login() {
                     LogIn
                 </Button>
             </form>
-            {!isValidCredientials && <span>Invalid credentials</span>}
+            {!isValidCredientials && (
+                <span className="text-xs font-semibold text-red-500">
+                    Invalid credentials
+                </span>
+            )}
             {/* </div> */}
         </div>
     );

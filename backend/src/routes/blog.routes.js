@@ -9,6 +9,7 @@ import {
     editBlog,
     deleteBlog,
     getBlog,
+    getAllBlogs,
 } from "../controllers/blog.controllers.js";
 
 router
@@ -19,5 +20,6 @@ router
     .post(verifyJwt, upload.single("coverImage"), editBlog);
 router.route("/deleteBlog/:id").delete(verifyJwt, deleteBlog);
 router.route("/getBlog/:id").get(getBlog);
+router.route("/getAllBlogs").get(getAllBlogs);
 
 export default router;

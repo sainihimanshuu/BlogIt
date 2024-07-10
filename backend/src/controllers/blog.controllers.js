@@ -144,4 +144,10 @@ const getBlog = asyncHandler(async (req, res) => {
         .json({ message: "Blog fetched successfully", blog: blogg[0] });
 });
 
-export { createBlog, editBlog, deleteBlog, getBlog };
+const getAllBlogs = asyncHandler(async (req, res) => {
+    const allBlogs = await Blog.find({});
+
+    return res.status(200).json({ message: "all blogs fetched", allBlogs });
+});
+
+export { createBlog, editBlog, deleteBlog, getBlog, getAllBlogs };
