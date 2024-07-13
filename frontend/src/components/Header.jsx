@@ -3,18 +3,17 @@ import Button from "./Button.jsx";
 import UserIcon from "./UserIcon.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { storeLogout } from "../features/authSlice.js";
-import axios from "axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
 
 export default function Header() {
     const loginStatus = useSelector((state) => state.auth.status);
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const axiosPrivate = useAxiosPrivate();
 
     const handleLogout = () => {
-        axios
-            .post("/user/logOut", {
-                accessToken: localStorage.getItem("token"),
-            })
+        axiosPrivate
+            .post("/user/logOut")
             .then((response) => {
                 dispatch(storeLogout());
                 localStorage.removeItem("token");

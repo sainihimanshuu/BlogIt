@@ -20,6 +20,6 @@ router.route("/logOut").post(verifyJwt, logOut);
 router.route("/getCurrentUser").get(verifyJwt, getCurrentUser);
 router.route("/accountProfile/:id").get(accountProfile);
 router.route("/updateAccountDetails").post(verifyJwt, updateAccountDetails);
-router.route("/refreshToken").post(refreshAccessToken);
+router.route("/refreshToken").get(refreshAccessToken);
 
 export default router;

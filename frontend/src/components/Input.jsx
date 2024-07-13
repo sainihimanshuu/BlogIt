@@ -7,7 +7,8 @@ const Input = forwardRef(function Input(
     const id = useId();
     return (
         <div className="mb-8">
-            <div className="flex justify-center">
+            <div className="flex justify-center items-center">
+                {label && <label className="mr-2 font-semibold">{label}</label>}
                 <input
                     id={id}
                     type={type}

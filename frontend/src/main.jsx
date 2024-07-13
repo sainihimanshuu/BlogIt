@@ -10,7 +10,7 @@ import {
     RouterProvider,
     Route,
 } from "react-router-dom";
-import axios from "axios";
+import axios from "./axios/api.js";
 import {
     LoginPage,
     SignupPage,
@@ -20,8 +20,6 @@ import {
     BlogPage,
     AllBlogsPage,
 } from "./pages/index.js";
-
-axios.defaults.baseURL = "http://localhost:8000/api/v1";
 
 const router = createBrowserRouter(
     createRoutesFromElements(

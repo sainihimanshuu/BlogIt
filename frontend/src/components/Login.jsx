@@ -3,12 +3,11 @@ import Input from "./Input.jsx";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "../axios/api.js";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { storeLogin } from "../features/authSlice.js";
-import Cookies from "js-cookie";
 
 const schema = z.object({
     email: z.string().email().trim(),
@@ -32,7 +31,9 @@ export default function Login() {
 
     const onSubmit = (data) => {
         axios
-            .post("./user/loginUser", data)
+            .post("/user/loginUser", data, {
+                withCredentials: true,
+            })
             .then((response) => {
                 dispatch(storeLogin(response.data.user));
                 localStorage.setItem(

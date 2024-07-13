@@ -38,7 +38,7 @@ const createUserSchema = z.object({
     about: z.string().optional(),
 });
 
-const createUser = asyncHandler(async (req, res) => { 
+const createUser = asyncHandler(async (req, res) => {
     const validatedData = createUserSchema.parse(req.body);
 
     //need to check if this can be done by zod
@@ -130,7 +130,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        //secure: false,
+        sameSite: "strict",
     };
 
     return res
@@ -147,7 +148,8 @@ const logOut = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        //secure: false,
+        sameSite: "strict",
     };
 
     return res
@@ -263,7 +265,8 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        //secure: false,
+        sameSite: "strict",
     };
 
     return res
@@ -295,14 +298,15 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        //secure: false,
+        sameSite: "strict",
     };
 
     return res
         .status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .json({ message: "tokens refreshed" });
+        .json({ message: "tokens refreshed", accessToken: accessToken });
 });
 
 export {

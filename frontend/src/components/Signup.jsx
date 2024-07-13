@@ -4,9 +4,8 @@ import Input from "./Input.jsx";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "../axios/api.js";
 import FormData from "form-data";
-import util from "util";
 
 const MAX_UPLOAD_SIZE = 8 * 1024 * 1024 * 1024 * 3;
 const ACCEPTED_IMAGE_TYPES = [

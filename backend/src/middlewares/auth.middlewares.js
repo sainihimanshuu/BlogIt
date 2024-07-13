@@ -18,7 +18,7 @@ const authenticateUser = asyncHandler(async (req, _, next) => {
     try {
         var decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     } catch (error) {
-        throw new ApiError(500, "error while decoding access token");
+        throw new ApiError(403, "error while decoding access token");
     }
 
     const user = await User.findById(decoded.id).select(
@@ -26,7 +26,7 @@ const authenticateUser = asyncHandler(async (req, _, next) => {
     );
 
     if (!user) {
-        throw new ApiError(401, "Invalid token");
+        throw new ApiError(403, "Invalid token");
     }
 
     req.user = user;

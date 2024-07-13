@@ -9,7 +9,7 @@ export default function RTE({
 }) {
     return (
         <div>
-            {label && <label>{label}</label>}
+            {label && <label className="mr-2 font-semibold">{label}</label>}
             <Controller
                 name={name}
                 control={control}
