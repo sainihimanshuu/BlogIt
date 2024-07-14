@@ -19,6 +19,7 @@ import {
     AccountProfilePage,
     BlogPage,
     AllBlogsPage,
+    LikedBlogsPage,
 } from "./pages/index.js";
 
 const router = createBrowserRouter(
@@ -44,22 +45,8 @@ const router = createBrowserRouter(
                     }
                 }}
             />
-            <Route
-                path="/blog/:blogId"
-                element={<BlogPage />}
-                loader={async ({ params }) => {
-                    try {
-                        return await axios.get(
-                            `/blog/getBlog/${params.blogId}`
-                        );
-                    } catch (error) {
-                        console.log(
-                            "error with fetching blog ",
-                            error.response.data
-                        );
-                    }
-                }}
-            />
+            <Route path="/blog/:blogId" element={<BlogPage />} />
+            <Route path="/likedBlogs" element={<LikedBlogsPage />} />
             <Route path="/getAllBlogs" element={<AllBlogsPage />} />
         </Route>
     )

@@ -19,7 +19,7 @@ router
     .route("/editBlog/:id")
     .post(verifyJwt, upload.single("coverImage"), editBlog);
 router.route("/deleteBlog/:id").delete(verifyJwt, deleteBlog);
-router.route("/getBlog/:id").get(getBlog);
+router.route("/getBlog/:id").get(verifyJwt, getBlog);
 router.route("/getAllBlogs").get(getAllBlogs);
 
 export default router;

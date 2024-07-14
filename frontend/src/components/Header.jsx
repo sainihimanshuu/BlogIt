@@ -23,6 +23,10 @@ export default function Header() {
             .finally(() => navigate("/"));
     };
 
+    const handleLikedBlogs = () => {
+        navigate("/likedBlogs");
+    };
+
     return (
         <div className="p-6 h-20 flex justify-between items-center shadow-lg">
             <Link to="/">
@@ -39,6 +43,9 @@ export default function Header() {
                     <div className="flex items-center">
                         <Button className="myButton" onClick={handleLogout}>
                             Logout
+                        </Button>
+                        <Button className="myButton" onClick={handleLikedBlogs}>
+                            Liked
                         </Button>
                         <UserIcon className="m-2" />
                     </div>

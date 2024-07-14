@@ -1,12 +1,11 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Blog from "../components/Blog.jsx";
 
 export default function BlogPage() {
-    const response = useLoaderData();
-
+    let { blogId } = useParams();
     return (
         <div>
-            <Blog blogDetails={response.data.blog} />
+            <Blog blogId={blogId} />
         </div>
     );
 }

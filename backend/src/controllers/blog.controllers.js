@@ -6,6 +6,7 @@ import {
 } from "../utils/cloudinary.js";
 import Blog from "../models/blog.models.js";
 import mongoose from "mongoose";
+import Like from "../models/like.models.js";
 
 const createBlogSchema = z.object({
     title: z.string().trim(),
@@ -99,6 +100,10 @@ const deleteBlog = asyncHandler(async (req, res) => {
 
     await Blog.findByIdAndDelete(id);
 
+    await Like.deleteMany({
+        blog: id,
+    });
+
     return res.status(200).json({ message: "blog deleted successfully" });
 });
 
@@ -120,15 +125,40 @@ const getBlog = asyncHandler(async (req, res) => {
             },
         },
         {
+            $lookup: {
+                from: "likes",
+                localField: "_id",
+                foreignField: "blog",
+                as: "blogLikes",
+            },
+        },
+        {
+            $addFields: {
+                noOfLikes: {
+                    $size: "$blogLikes",
+                },
+                isLiked: {
+                    $cond: {
+                        if: { $in: [req.user?._id, "$blogLikes.likedBy"] },
+                        then: true,
+                        else: false,
+                    },
+                },
+            },
+        },
+        {
             $project: {
                 _id: 1,
                 title: 1,
                 coverImage: 1,
                 content: 1,
                 authorDetails: {
+                    _id: 1,
                     avatar: 1,
                     username: 1,
                 },
+                noOfLikes: 1,
+                isLiked: 1,
             },
         },
         {

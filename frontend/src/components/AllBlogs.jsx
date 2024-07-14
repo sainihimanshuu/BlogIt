@@ -10,7 +10,7 @@ export default function AllBlogs() {
         axios
             .get("/blog/getAllBlogs")
             .then((response) => {
-                setAllBlogDetails([response.data.allBlogs]);
+                setAllBlogDetails(response.data.allBlogs);
                 console.log(allBlogsDetails);
                 setLoading(false);
             })

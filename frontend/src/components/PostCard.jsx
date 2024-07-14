@@ -1,4 +1,4 @@
-import axios from "../axios/api.js";
+import axios, { axiosPrivate } from "../axios/api.js";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -6,7 +6,7 @@ export default function PostCard(props) {
     const [blogDetails, setBlogDetails] = useState();
 
     useEffect(() => {
-        axios
+        axiosPrivate
             .get(`/blog/getBlog/${props.blogId}`)
             .then((response) => setBlogDetails(response.data.blog))
             .catch((error) =>
