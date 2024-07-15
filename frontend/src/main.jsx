@@ -20,6 +20,8 @@ import {
     BlogPage,
     AllBlogsPage,
     LikedBlogsPage,
+    EditBlogPage,
+    EditProfilePage,
 } from "./pages/index.js";
 
 const router = createBrowserRouter(
@@ -48,6 +50,8 @@ const router = createBrowserRouter(
             <Route path="/blog/:blogId" element={<BlogPage />} />
             <Route path="/likedBlogs" element={<LikedBlogsPage />} />
             <Route path="/getAllBlogs" element={<AllBlogsPage />} />
+            <Route path="/editBlog/:blogId" element={<EditBlogPage />} />
+            <Route path="/editProfile" element={<EditProfilePage />} />
         </Route>
     )
 );

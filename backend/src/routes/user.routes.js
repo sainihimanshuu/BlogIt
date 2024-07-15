@@ -19,7 +19,9 @@ router.route("/loginUser").post(loginUser);
 router.route("/logOut").post(verifyJwt, logOut);
 router.route("/getCurrentUser").get(verifyJwt, getCurrentUser);
 router.route("/accountProfile/:id").get(accountProfile);
-router.route("/updateAccountDetails").post(verifyJwt, updateAccountDetails);
+router
+    .route("/updateAccountDetails")
+    .post(verifyJwt, upload.single("avatar"), updateAccountDetails);
 router.route("/refreshToken").get(refreshAccessToken);
 
 export default router;

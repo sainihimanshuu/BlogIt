@@ -2,7 +2,10 @@ import User from "../models/user.models.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { z } from "zod";
 import { ApiError } from "../utils/ApiError.js";
-import { uploadOnCloundinary } from "../utils/cloudinary.js";
+import {
+    uploadOnCloundinary,
+    deleteFromCloundinary,
+} from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
@@ -193,6 +196,7 @@ const accountProfile = asyncHandler(async (req, res) => {
         },
         {
             $project: {
+                _id: 1,
                 username: 1,
                 avatar: 1,
                 about: 1,
@@ -214,7 +218,7 @@ const accountProfile = asyncHandler(async (req, res) => {
 const updateAccountDetailsSchema = z.object({
     username: z
         .string()
-        .regex(/^[a-zA-Z_]+$/)
+        .regex(/^[a-zA-Z ]+$/)
         .trim()
         .optional(),
     email: z.string().email().trim().optional(),
@@ -226,17 +230,17 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     const validatedData = updateAccountDetailsSchema.parse(req.body);
 
     //need to check if this can be done by zod
-    if (validatedData.username) {
-        const usernameExists = await User.findOne({
-            username: validatedData.username,
-        });
-        if (usernameExists) {
-            throw new ApiError(
-                400,
-                "User with username already exists, choose a new username"
-            );
-        }
-    }
+    // if (validatedData.username) {
+    //     const usernameExists = await User.findOne({
+    //         username: validatedData.username,
+    //     });
+    //     if (usernameExists) {
+    //         throw new ApiError(
+    //             400,
+    //             "User with username already exists, choose a new username"
+    //         );
+    //     }
+    // }
     //need to check if this can be done by zod
     if (validatedData.email) {
         const emailExists = await User.findOne({ email: validatedData.email });
@@ -253,6 +257,21 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     fields.forEach(
         (field) => (user._doc = { ...user._doc, [field]: validatedData[field] })
     );
+
+    if (req.file) {
+        const oldAvatar = user.avatar.public_id;
+        const avatarLocalPath = req.file?.path;
+        const uploadResponse = await uploadOnCloundinary(avatarLocalPath);
+        const avatar = uploadResponse;
+        user._doc = {
+            ...user._doc,
+            avatar: {
+                public_id: avatar.public_id,
+                url: avatar.url,
+            },
+        };
+        await deleteFromCloundinary(oldAvatar);
+    }
 
     const updatedUser = await User.findByIdAndUpdate(req.user._id, user, {
         new: true,

@@ -5,3 +5,7 @@
 .myButton {
     @apply m-2 w-20 h-10 cursor-pointer rounded-full font-semibold bg-gray-800 text-gray-100;
 }
+
+.clickableDiv {
+    @apply cursor-pointer;
+}

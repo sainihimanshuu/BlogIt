@@ -1,6 +1,18 @@
 import PostCard from "./PostCard.jsx";
+import Button from "./Button.jsx";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AccountProfile({ accountDetails: { accountBlogs } }) {
+    const [isAuthor, setIsAuthor] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (accountBlogs._id === JSON.parse(localStorage.getItem("user"))._id) {
+            setIsAuthor(true);
+        }
+    }, []);
+
     return (
         <div className="flex">
             <div className="w-1/3 fixed">
@@ -20,6 +32,14 @@ export default function AccountProfile({ accountDetails: { accountBlogs } }) {
                     </h1>
                     <p>{accountBlogs.about && accountBlogs.about}</p>
                 </div>
+                {isAuthor && (
+                    <Button
+                        className="myButton"
+                        onClick={() => navigate(`/editProfile`)}
+                    >
+                        Edit Profile
+                    </Button>
+                )}
             </div>
             <div className="w-2/3 h-screen ml-auto">
                 <ul className=" grid grid-cols-3">

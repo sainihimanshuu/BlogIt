@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Button from "../components/Button.jsx";
 import DeletePopup from "./DeletePopup.jsx";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Blog({ blogId }) {
     const [loading, setLoading] = useState(true);
@@ -61,16 +62,21 @@ export default function Blog({ blogId }) {
                 {blogDetails?.title}
             </h1>
             <div className="flex justify-between items-center mt-10">
-                <div className="flex justify-start items-center">
-                    <img
-                        className="rounded-full size-10 mr-5"
-                        src={blogDetails?.authorDetails.avatar.url}
-                        alt="author avatar"
-                    />
-                    <h3 className="text-gray-700 font-semibold">
-                        {blogDetails?.authorDetails.username}
-                    </h3>
-                </div>
+                <Link
+                    to={`/accountProfile/${blogDetails?.authorDetails?._id}`}
+                    className="clickableDiv"
+                >
+                    <div className="flex justify-start items-center">
+                        <img
+                            className="rounded-full size-10 mr-5"
+                            src={blogDetails?.authorDetails.avatar.url}
+                            alt="author avatar"
+                        />
+                        <h3 className="text-gray-700 font-semibold">
+                            {blogDetails?.authorDetails.username}
+                        </h3>
+                    </div>
+                </Link>
                 <div className="mr-1 flex" onClick={handleLikeToggle}>
                     <LikeIcon liked={isLiked} />
                     <p className="ml-2">{blogDetails?.noOfLikes}</p>
@@ -87,7 +93,12 @@ export default function Blog({ blogId }) {
                     <Button className="myButton" onClick={handleDelete}>
                         Delete
                     </Button>
-                    <Button className="myButton">Edit</Button>
+                    <Button
+                        className="myButton"
+                        onClick={() => navigate(`/editBlog/${blogId}`)}
+                    >
+                        Edit
+                    </Button>
                 </div>
             )}
             {deletePopup && (
