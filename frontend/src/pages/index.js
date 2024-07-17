@@ -8,6 +8,7 @@ import AllBlogsPage from "./AllBlogsPage.jsx";
 import LikedBlogsPage from "./LikedBlogsPage.jsx";
 import EditBlogPage from "./EditBlogPage.jsx";
 import EditProfilePage from "./EditProfilePage.jsx";
+import FollowedUserPage from "./FollowedUserPage.jsx";
 
 export {
     LoginPage,
@@ -20,4 +21,5 @@ export {
     LikedBlogsPage,
     EditBlogPage,
     EditProfilePage,
+    FollowedUserPage,
 };

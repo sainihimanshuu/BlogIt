@@ -16,10 +16,10 @@ export default function DeletePopup({ onNoClick, deleteBlog }) {
             onClick={closeModal}
         >
             <div className="w-1/3 h-32 bg-gray-100 rounded-[15px] flex flex-col gap-6">
-                <h1 className="text-gray-800 text-lg font-semibold mt-2">
+                <h1 className="text-gray-800 text-lg font-semibold mt-3">
                     Are you sure you want to delete the blog?
                 </h1>
-                <div className="flex justify-evenly ">
+                <div className="flex justify-evenly">
                     <Button className="myButton" onClick={deleteBlog}>
                         Yes
                     </Button>

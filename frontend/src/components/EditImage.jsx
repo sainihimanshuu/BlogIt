@@ -1,10 +1,10 @@
-export default function EditImage({ src, onClick, label }) {
+export default function EditImage({ src, onClick, label, className }) {
     return (
         <div className="relative">
             {label && (
                 <label className="text-gray-800 font-semibold">{label}</label>
             )}
-            <img className="mt-1" src={src} />
+            <img className={`mt-1 ${className}`} src={src} />
             <div
                 className="absolute bottom-2 right-2 clickableDiv"
                 onClick={onClick}

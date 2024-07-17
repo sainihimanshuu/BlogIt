@@ -59,7 +59,12 @@ export default function EditProfile() {
     return (
         <div className="w-1/2 p-3 bg-gray-200 shadow-2xl rounded-[20px] my-7 mx-auto">
             <form onSubmit={handleSubmit(edit)}>
-                <Input label="username" type="text" {...register("username")} />
+                <Input
+                    label="Username"
+                    type="text"
+                    {...register("username")}
+                    className="mt-1"
+                />
                 <div className="flex justify-center mb-2">
                     <EditImage
                         src={
@@ -84,7 +89,7 @@ export default function EditProfile() {
                         className="text-gray-800 font-semibold mr-2"
                         for="about"
                     >
-                        about
+                        About
                     </label>
                     <textarea
                         className="w-3/4 h-20 rounded-md pl-1"

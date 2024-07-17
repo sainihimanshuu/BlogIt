@@ -1,12 +1,12 @@
 import AccountProfile from "../components/AccountProfile.jsx";
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function AccountProfilePage() {
-    const response = useLoaderData();
+    const { userId } = useParams();
 
     return (
         <div>
-            <AccountProfile accountDetails={response.data} />
+            <AccountProfile userId={userId} />
         </div>
     );
 }

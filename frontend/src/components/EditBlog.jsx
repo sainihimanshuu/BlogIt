@@ -63,9 +63,15 @@ export default function EditBlog({ blogId }) {
     return (
         <div className="w-1/2 p-3 bg-gray-200 shadow-2xl rounded-[20px] my-7 mx-auto">
             <form onSubmit={handleSubmit(create)}>
-                <Input label="Title: " type="text" {...register("title")} />
+                <Input
+                    label="Title: "
+                    type="text"
+                    {...register("title")}
+                    className="mt-1"
+                />
                 <div className="flex justify-center mb-2 rounded-lg">
                     <EditImage
+                        className="size-52 w-96"
                         src={
                             choosenCover
                                 ? choosenCover
@@ -106,5 +112,3 @@ export default function EditBlog({ blogId }) {
         </div>
     );
 }
-
-//document.getElementById("fileInput").click()

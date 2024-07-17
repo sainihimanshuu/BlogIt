@@ -11,7 +11,6 @@ export default function AllBlogs() {
             .get("/blog/getAllBlogs")
             .then((response) => {
                 setAllBlogDetails(response.data.allBlogs);
-                console.log(allBlogsDetails);
                 setLoading(false);
             })
             .catch((error) =>

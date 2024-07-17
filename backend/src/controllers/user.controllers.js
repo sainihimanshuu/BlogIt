@@ -8,6 +8,7 @@ import {
 } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import Follower from "../models/follower.models.js";
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
@@ -30,7 +31,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
 const createUserSchema = z.object({
     username: z
         .string()
-        .regex(/^[a-zA-Z_]+$/)
+        .regex(/^[a-zA-Z ]+$/)
         .min(3, { message: "username must be at least 3 character " })
         .max(20, { message: "username can be max 20 character" })
         .trim(),
@@ -209,9 +210,14 @@ const accountProfile = asyncHandler(async (req, res) => {
         },
     ]);
 
+    const noOfFollowers = await Follower.find({
+        following: new mongoose.Types.ObjectId(id),
+    }).count();
+
     return res.status(200).json({
         message: "account detatils fetched",
         accountBlogs: accountBlogs[0],
+        noOfFollowers,
     });
 });
 
@@ -222,7 +228,10 @@ const updateAccountDetailsSchema = z.object({
         .trim()
         .optional(),
     email: z.string().email().trim().optional(),
-    about: z.string().optional(),
+    about: z
+        .string()
+        .max(140, { message: "Max 140 characters allowed" })
+        .optional(),
 });
 
 //on clicking edit account details

@@ -6,6 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../axios/api.js";
 import FormData from "form-data";
+import EditImage from "./EditImage.jsx";
+import { useState, useRef } from "react";
 
 const MAX_UPLOAD_SIZE = 8 * 1024 * 1024 * 1024 * 3;
 const ACCEPTED_IMAGE_TYPES = [
@@ -18,7 +20,7 @@ const ACCEPTED_IMAGE_TYPES = [
 const schema = z.object({
     username: z
         .string()
-        .regex(/^[a-zA-Z_]+$/)
+        .regex(/^[a-zA-Z ]+$/)
         .min(3, { message: "username must be at least 3 character " })
         .max(20, { message: "username can be max 20 character" })
         .trim(),
@@ -48,11 +50,13 @@ export default function Signup() {
         resolver: zodResolver(schema),
     });
 
+    const [choosenAvatar, setChoosenAvatar] = useState(null);
     const navigate = useNavigate();
+    const inputDiv = useRef();
 
     const onSubmit = (data) => {
         const form = new FormData();
-        form.append("avatar", data.avatar[0]);
+        form.append("avatar", data.avatar);
 
         for (const key in data) {
             if (key !== "avatar") {
@@ -72,21 +76,40 @@ export default function Signup() {
             .catch((error) => console.log("error while signing up", error));
     };
 
+    const handleChange = (event) => {
+        setChoosenAvatar(URL.createObjectURL(event.target.files[0]));
+        setValue("avatar", event.target.files[0]);
+    };
+
     return (
-        <div className="bg-gray-200 shadow-2xl rounded-[20px] w-80 h-[33rem] mx-auto mt-16 mb-10 relative">
-            <h2 className="text-gray-800 text-xl font-bold absolute top-0 right-0 bottom-0 left-0 mt-6">
+        <div className="bg-gray-200 shadow-2xl rounded-[20px] w-80 h-[40rem] mx-auto mt-16 mb-10 relative">
+            <h2 className="text-gray-800 text-xl font-bold absolute inset-0 mt-6">
                 Signup
             </h2>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="absolute top-0 right-0 bottom-0 left-0 mt-24"
+                className="absolute top-0 right-0 bottom-0 left-0 mt-16"
             >
+                <div className="flex justify-center mb-2">
+                    <EditImage
+                        className="rounded-[999px] size-40"
+                        src={
+                            choosenAvatar
+                                ? choosenAvatar
+                                : "/no-profile-picture-15257.svg"
+                        }
+                        onClick={() => inputDiv.current.click()}
+                        label="Avatar:"
+                    />
+                    <input
+                        type="file"
+                        className="hidden"
+                        ref={inputDiv}
+                        onChange={handleChange}
+                    />
+                </div>
                 <Input
-                    type="file"
-                    error={errors.avatar?.message}
-                    {...register("avatar")}
-                />
-                <Input
+                    className="mt-4"
                     placeHolder="username"
                     error={errors.username?.message}
                     {...register("username")}
@@ -105,8 +128,10 @@ export default function Signup() {
                 <Button className="myButton" type="submit">
                     Signup
                 </Button>
-                <h2>Already have an account?</h2>
-                <Link to="/login">Log In</Link>
+                <h2 className="mt-3">Already have an account?</h2>
+                <Link className="underline underline-offset-1" to="/login">
+                    Log In
+                </Link>
             </form>
         </div>
     );

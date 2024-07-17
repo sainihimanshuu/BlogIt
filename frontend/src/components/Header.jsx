@@ -41,6 +41,12 @@ export default function Header() {
                 </Button>
                 {loginStatus ? (
                     <div className="flex items-center">
+                        <Button
+                            className="myButton"
+                            onClick={() => navigate("/followedUsers")}
+                        >
+                            Followed
+                        </Button>
                         <Button className="myButton" onClick={handleLogout}>
                             Logout
                         </Button>

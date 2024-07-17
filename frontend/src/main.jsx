@@ -10,7 +10,6 @@ import {
     RouterProvider,
     Route,
 } from "react-router-dom";
-import axios from "./axios/api.js";
 import {
     LoginPage,
     SignupPage,
@@ -22,6 +21,7 @@ import {
     LikedBlogsPage,
     EditBlogPage,
     EditProfilePage,
+    FollowedUserPage,
 } from "./pages/index.js";
 
 const router = createBrowserRouter(
@@ -34,24 +34,13 @@ const router = createBrowserRouter(
             <Route
                 path="/accountProfile/:userId"
                 element={<AccountProfilePage />}
-                loader={async ({ params }) => {
-                    try {
-                        return await axios.get(
-                            `/user/accountProfile/${params.userId}`
-                        );
-                    } catch (error) {
-                        console.log(
-                            "error while fetching accountProfile ",
-                            error.response.data
-                        );
-                    }
-                }}
             />
             <Route path="/blog/:blogId" element={<BlogPage />} />
             <Route path="/likedBlogs" element={<LikedBlogsPage />} />
             <Route path="/getAllBlogs" element={<AllBlogsPage />} />
             <Route path="/editBlog/:blogId" element={<EditBlogPage />} />
             <Route path="/editProfile" element={<EditProfilePage />} />
+            <Route path="/followedUsers" element={<FollowedUserPage />} />
         </Route>
     )
 );
