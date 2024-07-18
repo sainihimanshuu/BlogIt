@@ -28,19 +28,19 @@ export default function Header() {
     };
 
     return (
-        <div className="p-6 h-20 flex justify-between items-center shadow-lg">
+        <div className="p-6 h-20 flex justify-between items-center shadow-lg ">
             <Link to="/">
                 <img src="/blogit.png" className="w-20 ml-2" />
             </Link>
             <div className="flex justify-between items-center">
-                <Button
-                    className="myButton"
-                    onClick={() => navigate("/getAllBlogs")}
-                >
-                    All Blogs
-                </Button>
                 {loginStatus ? (
                     <div className="flex items-center">
+                        <Button
+                            className="myButton"
+                            onClick={() => navigate("/getAllBlogs")}
+                        >
+                            All Blogs
+                        </Button>
                         <Button
                             className="myButton"
                             onClick={() => navigate("/followedUsers")}
